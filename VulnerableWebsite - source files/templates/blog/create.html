@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<style>
+  table, th, td {
+      padding: 10px;
+      border: 1px solid black;
+      border-collapse: collapse;
+      }
+  td {
+    text-align: right;
+  }
+</style>
+
+
+  <h1>{% block title %}Transfer Funds{% endblock %}</h1>
+  <a class="action" href="{{ url_for('blog.index', user_id=user_id) }}" style="text-align:right;">Account Settings</a>
+  <a class="action" href="{{ url_for('blog.update', user_id=user_id) }}" style="text-align:right;">Search Transactions</a>
+{% endblock %}
+
+{% block content %}
+<div>
+  <p style="text-align:right;">Current User: {{g.user[1]}}</p>
+</div>
+
+  <form method="post">
+    <label>Your current balance is {{session.balance}} </label>
+    <label for="account">Account Name</label>
+    <input name="account" id="account" value="{{ request.form['account'] }}" required>
+    <label for="amount">Transfer Amount</label>
+    <input name="amount" id="amount" value="{{ request.form['amount'] }}" required>
+    <input type="submit" value="Send">
+  </form>
+
+  {% if results %}
+      <table>
+        <tr>
+          <th>User ID</th>
+          <th colspan="2">Username</th>
+          <th colspan="4">Current Balance</th>
+        </tr>
+
+        {% for result in results %}
+
+            <tr>
+              <td>{{ result[0] }}</td>
+              <td colspan="2">{{ result[1] }}</td>
+              <td colspan="4">{{ result[2] }}</td>
+            </tr>
+
+        {% endfor %}
+      </table>
+    {% else %}
+        <p>No account by that name or transfer too large. Please try again.</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block header %}
+
+<h1>{% block title %}Account Security Options{% endblock %}</h1>
+<a class="action"  href="{{ url_for('blog.update', user_id=user_id) }}" style="text-align:right;">Search Transactions</a>
+<a class="action"  href="{{ url_for('blog.create', user_id=user_id) }}" style="text-align:right;">Transfer Funds</a>
+
+{% endblock %}
+
+{% block content %}
+
+<div>
+  <p style="text-align:right;">Current User: {{g.user[1]}}</p>
+</div>
+
+  {% if g.user[1] %}
+
+    {% if g.user[3] == None %}
+
+      <form method="post">
+          <label for="word">Insert your secret word:</label>
+          <input name="secretWord" id="secretWord" value="{{ request.form['secretWord'] | safe }}" required>
+          <input type="submit" value="Enter">
+      </form>
+
+    {% endif %}
+
+    {% if g.user[3] %}
+
+      <h4>Your secret word is: {{ g.user[3] | safe }}</h4>
+
+    {% endif %}
+
+  {% endif %}
+
+{% endblock %}

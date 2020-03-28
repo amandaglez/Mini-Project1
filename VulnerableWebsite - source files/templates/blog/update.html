@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<style>
+  table, th, td {
+      padding: 10px;
+      border: 1px solid black;
+      border-collapse: collapse;
+      }
+  td {
+    text-align: right;
+  }
+</style>
+
+  <h1>{% block title %}Search Transactions{% endblock %}</h1>
+  <a class="action"  href="{{ url_for('blog.index', user_id=user_id) }}" style="text-align:right;">Account Settings</a>
+  <a class="action"  href="{{ url_for('blog.create', user_id=user_id) }}" style="text-align:right;">Transfer Funds</a>
+{% endblock %}
+
+{% block content %}
+
+<div>
+  <p style="text-align:right;">Current User: {{g.user[1]}}</p>
+</div>
+
+    <h3>Search for a transaction date (yyyy-mm-dd):</h3>
+    {% from "_formhelpers.html" import render_field %}
+    <form method="post">
+      <table style="border:none;">
+        <tr>
+          <td style="border:none;">{{ render_field(form.search) }}</td>
+          <td style="border:none;"><input type="submit" value="Search"></td>
+        </tr>
+      </table>
+        <p>
+
+    {% if results %}
+      <table>
+        <tr>
+          <th>User ID</th>
+          <th colspan="2">Username</th>
+          <th colspan="4">Date</th>
+          <th>Amount</th>
+        </tr>
+
+        {% for result in results %}
+
+            <tr>
+              <td>{{ result[0] }}</td>
+              <td colspan="2">{{ result[1] }}</td>
+              <td colspan="4">{{ result[2] }}</td>
+              <td>{{ result[3] }}</td>
+            </tr>
+
+        {% endfor %}
+      </table>
+    {% else %}
+        <p>No results found for your account.</p>
+    {% endif %}
+
+  {% endblock %}
